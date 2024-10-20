@@ -1,22 +1,9 @@
-"use client";
-
 import dynamic from "next/dynamic";
 import { UploadCloud } from "lucide-react";
-import readExcel from "@/app/actions/readExcel";
-import axios from "axios";
 
 const Dropzone = dynamic(() => import("react-dropzone"), { ssr: false });
 
-const index = () => {
-  const handleDropFile = async (acceptedFiles, fileRejections) => {
-    if (fileRejections.length) return "File is not supported";
-
-    const excel = await readExcel(acceptedFiles[0]);
-    const { data } = await axios.post("/api/scrap_product_info", {
-      asin: excel.map((data) => data.ASIN),
-    });
-  };
-
+const index = ({ handleDropFile }) => {
   return (
     <Dropzone onDrop={handleDropFile}>
       {({ getRootProps, getInputProps }) => (

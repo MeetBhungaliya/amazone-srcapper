@@ -4,6 +4,7 @@ import * as cheerio from "cheerio";
 import cookie from "./cookie.json";
 import fs from "fs";
 import path from "path";
+import { headers } from "next/headers";
 
 // const fresh_cookie = await browser.cookies();
 
@@ -20,7 +21,32 @@ import path from "path";
 //   "utf8"
 // );
 
-export async function POST(req) {
+export async function POST(req, res) {
+  // const headers = {
+  //   "Access-Control-Allow-Origin": "*",
+  //   "Content-Type": "text/event-stream;charset=utf-8",
+  //   "Cache-Control": "no-cache",
+  //   Connection: "keep-alive",
+  // };
+
+  // // Create a new response object for streaming
+  // const response = new Response(
+  //   async (readableStreamDefaultWriter) => {
+  //     const writer = readableStreamDefaultWriter.getWriter();
+
+  //     for (let i = 0; i < 5; i++) {
+  //       const data = `data: Hello seq ${i}\n\n`;
+  //       await writer.write(new TextEncoder().encode(data));
+  //       await new Promise((resolve) => setTimeout(resolve, 1000)); // Sleep for 1 second
+  //     }
+
+  //     // Close the writer when done
+  //     await writer.close();
+  //   },
+  //   { headers }
+  // );
+
+  // return response;
   try {
     const body = await req.json();
     const { asin } = body;
@@ -68,7 +94,7 @@ export async function POST(req) {
 
     await browser.close();
 
-    return NextResponse.json({ results }, { status: 200 });
+    return NextResponse.json(results, { status: 200 });
   } catch (error) {
     console.error("Error parsing request body:", error);
     return NextResponse.json(
